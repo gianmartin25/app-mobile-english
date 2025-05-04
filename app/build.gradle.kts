@@ -35,6 +35,14 @@ android {
 }
 
 dependencies {
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    // Glide (carga de imágenes)
+    implementation(libs.glide.core)
+
+    // Opcional: Logging interceptor
+    implementation(libs.okhttp.logging)
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -43,6 +51,8 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,9 +1,11 @@
 package com.example.applicationtest;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,111 +13,104 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private int currentStep = 1;
-    private TextView stepTitle;
-    private TextView step1Indicator, step2Indicator, step3Indicator;
-    private LinearLayout step1, step2, step3;
-    private Button btnBack, btnNext;
+    private StepManager stepManager;
+    private FormValidator formValidator;
+    private FormSubmitter formSubmitter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
-        stepTitle = findViewById(R.id.stepTitle);
-        step1Indicator = findViewById(R.id.step1Indicator);
-        step2Indicator = findViewById(R.id.step2Indicator);
-        step3Indicator = findViewById(R.id.step3Indicator);
+        // Inicializar vistas
+        TextView stepTitle = findViewById(R.id.stepTitle);
+        TextView step1Indicator = findViewById(R.id.step1Indicator);
+        TextView step2Indicator = findViewById(R.id.step2Indicator);
+        TextView step3Indicator = findViewById(R.id.step3Indicator);
 
-        step1 = findViewById(R.id.step1);
-        step2 = findViewById(R.id.step2);
-        step3 = findViewById(R.id.step3);
+        LinearLayout step1 = findViewById(R.id.step1);
+        LinearLayout step2 = findViewById(R.id.step2);
+        LinearLayout step3 = findViewById(R.id.step3);
 
-        btnBack = findViewById(R.id.btnBack);
-        btnNext = findViewById(R.id.btnNext);
+        Button btnBack = findViewById(R.id.btnBack);
+        Button btnNext = findViewById(R.id.btnNext);
 
-        // Set initial state
-        updateStepIndicators();
-        updateStepViews();
+        // Inicializar clases
+        stepManager = new StepManager(stepTitle, step1Indicator, step2Indicator, step3Indicator, step1, step2, step3);
+        formValidator = new FormValidator();
+        formSubmitter = new FormSubmitter();
 
-        // Button listeners
+        // Configurar estado inicial
+        stepManager.updateStepIndicators(currentStep, this);
+        stepManager.updateStepViews(currentStep);
+
+        // Listeners de botones
         btnBack.setOnClickListener(v -> {
             if (currentStep > 1) {
                 currentStep--;
-                updateStepIndicators();
-                updateStepViews();
-                updateButtons();
+                stepManager.updateStepIndicators(currentStep, this);
+                stepManager.updateStepViews(currentStep);
             }
         });
 
         btnNext.setOnClickListener(v -> {
-            if (validateCurrentStep()) {
+            if (formValidator.validateStep(currentStep)) {
                 if (currentStep < 3) {
                     currentStep++;
-                    updateStepIndicators();
-                    updateStepViews();
-                    updateButtons();
+                    stepManager.updateStepIndicators(currentStep, this);
+                    stepManager.updateStepViews(currentStep);
                 } else {
-                    // Final step - Submit form
-                    submitForm();
+                    // Capturar valores del formulario
+                    String fullName = ((TextView) findViewById(R.id.fullName)).getText().toString();
+                    String email = ((TextView) findViewById(R.id.email)).getText().toString();
+                    String password = ((TextView) findViewById(R.id.password)).getText().toString();
+
+                    String englishLevel = "";
+                    if (((RadioButton) findViewById(R.id.beginner)).isChecked()) {
+                        englishLevel = "Principiante (A1)";
+                    } else if (((RadioButton) findViewById(R.id.elementary)).isChecked()) {
+                        englishLevel = "Básico (A2)";
+                    } else if (((RadioButton) findViewById(R.id.intermediate)).isChecked()) {
+                        englishLevel = "Intermedio (B1)";
+                    } else if (((RadioButton) findViewById(R.id.upperIntermediate)).isChecked()) {
+                        englishLevel = "Intermedio Alto (B2)";
+                    } else if (((RadioButton) findViewById(R.id.advanced)).isChecked()) {
+                        englishLevel = "Avanzado (C1-C2)";
+                    }
+
+                    StringBuilder learningGoals = new StringBuilder();
+                    if (((CheckBox) findViewById(R.id.goalGrammar)).isChecked()) {
+                        learningGoals.append("Gramática, ");
+                    }
+                    if (((CheckBox) findViewById(R.id.goalVocabulary)).isChecked()) {
+                        learningGoals.append("Vocabulario, ");
+                    }
+                    if (((CheckBox) findViewById(R.id.goalListening)).isChecked()) {
+                        learningGoals.append("Comprensión auditiva, ");
+                    }
+                    if (((CheckBox) findViewById(R.id.goalSpeaking)).isChecked()) {
+                        learningGoals.append("Expresión oral, ");
+                    }
+                    if (((CheckBox) findViewById(R.id.goalWriting)).isChecked()) {
+                        learningGoals.append("Expresión escrita, ");
+                    }
+
+                    // Eliminar la última coma y espacio
+                    if (learningGoals.length() > 0) {
+                        learningGoals.setLength(learningGoals.length() - 2);
+                    }
+
+                    // Pasar los valores a DashboardActivity
+                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                    intent.putExtra("fullName", fullName);
+                    intent.putExtra("email", email);
+                    intent.putExtra("password", password);
+                    intent.putExtra("englishLevel", englishLevel);
+                    intent.putExtra("learningGoals", learningGoals.toString());
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
-    }
-
-    private void updateStepIndicators() {
-        // Reset all indicators
-        step1Indicator.setBackgroundResource(R.drawable.step_indicator_inactive);
-        step2Indicator.setBackgroundResource(R.drawable.step_indicator_inactive);
-        step3Indicator.setBackgroundResource(R.drawable.step_indicator_inactive);
-        step1Indicator.setTextColor(getResources().getColor(R.color.gray_dark));
-        step2Indicator.setTextColor(getResources().getColor(R.color.gray_dark));
-        step3Indicator.setTextColor(getResources().getColor(R.color.gray_dark));
-
-        // Activate current step
-        switch (currentStep) {
-            case 1:
-                step1Indicator.setBackgroundResource(R.drawable.step_indicator_active);
-                step1Indicator.setTextColor(getResources().getColor(R.color.white));
-                stepTitle.setText("Información Personal");
-                break;
-            case 2:
-                step2Indicator.setBackgroundResource(R.drawable.step_indicator_active);
-                step2Indicator.setTextColor(getResources().getColor(R.color.white));
-                stepTitle.setText("Nivel de Inglés");
-                break;
-            case 3:
-                step3Indicator.setBackgroundResource(R.drawable.step_indicator_active);
-                step3Indicator.setTextColor(getResources().getColor(R.color.white));
-                stepTitle.setText("Objetivos de Aprendizaje");
-                break;
-        }
-    }
-
-    private void updateStepViews() {
-        step1.setVisibility(currentStep == 1 ? View.VISIBLE : View.GONE);
-        step2.setVisibility(currentStep == 2 ? View.VISIBLE : View.GONE);
-        step3.setVisibility(currentStep == 3 ? View.VISIBLE : View.GONE);
-    }
-
-    private void updateButtons() {
-        btnBack.setVisibility(currentStep > 1 ? View.VISIBLE : View.INVISIBLE);
-
-        if (currentStep < 3) {
-            btnNext.setText("Siguiente");
-        } else {
-            btnNext.setText("Registrarse");
-        }
-    }
-
-    private boolean validateCurrentStep() {
-        // Add validation logic for each step
-        // Return true if validation passes, false otherwise
-        return true;
-    }
-
-    private void submitForm() {
-        // Handle form submission
-        // Collect all data and send to server
     }
 }
