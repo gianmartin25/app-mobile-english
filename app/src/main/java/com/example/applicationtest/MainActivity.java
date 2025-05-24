@@ -7,6 +7,9 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.example.applicationtest.DatabaseHelper;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private StepManager stepManager;
     private FormValidator formValidator;
     private FormSubmitter formSubmitter;
+    private DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         stepManager = new StepManager(stepTitle, step1Indicator, step2Indicator, step3Indicator, step1, step2, step3);
         formValidator = new FormValidator();
         formSubmitter = new FormSubmitter();
+        databaseHelper = new DatabaseHelper(this);
+
 
         // Configurar estado inicial
         stepManager.updateStepIndicators(currentStep, this);
@@ -101,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Pasar los valores a DashboardActivity
+                    boolean isInserted = databaseHelper.insertarUsuario(fullName, email, password, englishLevel, learningGoals.toString());
+                    if (isInserted) {
+                        Toast.makeText(MainActivity.this, "Registro guardado correctamente", Toast.LENGTH_SHORT). show();
+                    }else {
+                        Toast.makeText(MainActivity.this, "Error al guardar el registro", Toast.LENGTH_SHORT).show();
+                    }
+
                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                     intent.putExtra("fullName", fullName);
                     intent.putExtra("email", email);
