@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_verbs"
+        android:title="Verbos" />
+    <item
+        android:id="@+id/nav_nouns"
+        android:title="Sustantivos" />
+    <item
+        android:id="@+id/nav_adjectives"
+        android:title="Adjetivos" />
+    <item
+        android:id="@+id/nav_adverbs"
+        android:title="Adverbios" />
+</menu>

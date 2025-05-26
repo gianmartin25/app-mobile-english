@@ -1,14 +1,27 @@
 package com.example.applicationtest;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.applicationtest.api.ApiService;
+import com.example.applicationtest.api.RetrofitClient;
+import com.example.applicationtest.auth.models.RegisterRequest;
+import com.example.applicationtest.auth.models.RegisterResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,15 +114,70 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Pasar los valores a DashboardActivity
-                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                    intent.putExtra("fullName", fullName);
-                    intent.putExtra("email", email);
-                    intent.putExtra("password", password);
-                    intent.putExtra("englishLevel", englishLevel);
-                    intent.putExtra("learningGoals", learningGoals.toString());
-                    startActivity(intent);
-                    finish();
+//                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+//                    intent.putExtra("fullName", fullName);
+//                    intent.putExtra("email", email);
+//                    intent.putExtra("password", password);
+//                    intent.putExtra("englishLevel", englishLevel);
+//                    intent.putExtra("learningGoals", learningGoals.toString());
+//                    startActivity(intent);
+                    registerUser(fullName, email, password, englishLevel, learningGoals.toString());
                 }
+            }
+        });
+    }
+
+
+    private void registerUser(String fullName, String email, String password, String englishLevel, String learningGoals) {
+        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+
+        // Dividir el nombre completo en nombre y apellido
+        String[] nameParts = fullName.split(" ", 2);
+        String name = nameParts[0];
+        String lastname = nameParts.length > 1 ? nameParts[1] : "";
+
+        RegisterRequest registerRequest = new RegisterRequest(name, lastname, email, englishLevel, learningGoals, password);
+
+        // Mostrar el loader
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registrando...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        apiService.registerUser(registerRequest).enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                progressDialog.dismiss(); // Ocultar el loader
+
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Register", "Respuesta exitosa: " + response.body().toString());
+
+                    // Mostrar alerta de éxito
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Registro exitoso")
+                            .setMessage("El usuario se ha registrado correctamente.")
+                            .setPositiveButton("Aceptar", (dialog, which) -> {
+                                // Navegar a DashboardActivity
+                                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                intent.putExtra("fullName", fullName);
+                                intent.putExtra("email", email);
+                                intent.putExtra("englishLevel", englishLevel);
+                                intent.putExtra("learningGoals", learningGoals);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .show();
+                } else {
+                    Log.e("Register", "Error en la respuesta: " + response.code());
+                    Toast.makeText(MainActivity.this, "Error al registrar usuario: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                progressDialog.dismiss(); // Ocultar el loader
+                Log.e("Register", "Error en la solicitud: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

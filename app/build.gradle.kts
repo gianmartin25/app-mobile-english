@@ -40,7 +40,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     // Glide (carga de imágenes)
     implementation(libs.glide.core)
-
+    implementation("com.airbnb.android:lottie:6.6.6")
     // Opcional: Logging interceptor
     implementation(libs.okhttp.logging)
     implementation("androidx.viewpager2:viewpager2:1.1.0")

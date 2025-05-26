@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="purple_500">#6200EE</color>
-    <color name="teal_200">#03DAC5</color>
-    <color name="purple_700">#3700B3</color>
-    <color name="gray">#757575</color>
+    <color name="black">#212121</color> <!-- Negro más suave -->
+    <color name="white">#FFFFFF</color>
+    <color name="purple_500">#9575CD</color> <!-- Púrpura más claro -->
+    <color name="teal_200">#80CBC4</color> <!-- Verde azulado más suave -->
+    <color name="purple_700">#673AB7</color> <!-- Púrpura intermedio -->
+    <color name="gray">#9E9E9E</color> <!-- Gris más claro -->
     <color name="gray_light">#E0E0E0</color>
-    <color name="gray_dark">#424242</color>
+    <color name="gray_dark">#616161</color> <!-- Gris oscuro más suave -->
 </resources>
