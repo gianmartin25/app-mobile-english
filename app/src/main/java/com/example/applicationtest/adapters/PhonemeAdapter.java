@@ -20,12 +20,12 @@ import java.util.List;
 
 public class PhonemeAdapter extends RecyclerView.Adapter<PhonemeAdapter.PhonemeViewHolder> {
 
-    private final List<Verb.CountryVerb> countriesVerb;
+    private final List<Verb.CountryWord> countriesWord;
     private final Context context;
 
-    public PhonemeAdapter(Context context, List<Verb.CountryVerb> countriesVerb) {
+    public PhonemeAdapter(Context context, List<Verb.CountryWord> countriesWord) {
         this.context = context;
-        this.countriesVerb = countriesVerb;
+        this.countriesWord = countriesWord;
     }
 
     @NonNull
@@ -37,17 +37,17 @@ public class PhonemeAdapter extends RecyclerView.Adapter<PhonemeAdapter.PhonemeV
 
     @Override
     public void onBindViewHolder(@NonNull PhonemeViewHolder holder, int position) {
-        Verb.CountryVerb countryVerb = countriesVerb.get(position);
+        Verb.CountryWord countryWord = countriesWord.get(position);
 
         // Mostrar encabezado del país con bandera
-        holder.countryHeader.setText(String.format("%s %s %s", countryVerb.getCountry(), countryVerb.getPhonetic(), countryVerb.getVerbName()));
-        holder.countryIcon.setImageResource(countryVerb.getCountry().equals("UK") ? R.drawable.ic_uk_flag : R.drawable.ic_us_flag);
+        holder.countryHeader.setText(String.format("%s %s %s", countryWord.getCountry(), countryWord.getPhonetic(), countryWord.getWordName()));
+        holder.countryIcon.setImageResource(countryWord.getCountry().equals("UK") ? R.drawable.ic_uk_flag : R.drawable.ic_us_flag);
 
         // Limpiar contenedor de fonemas
         holder.phonemeContainer.removeAllViews();
 
         // Agregar fonemas dinámicamente
-        for (Verb.Character character : countryVerb.getCharacters()) {
+        for (Verb.Phoeneme phoeneme : countryWord.getCharacters()) {
             LinearLayout phonemeRow = new LinearLayout(context);
             phonemeRow.setOrientation(LinearLayout.HORIZONTAL);
             phonemeRow.setPadding(0, 8, 0, 8);
@@ -57,10 +57,10 @@ public class PhonemeAdapter extends RecyclerView.Adapter<PhonemeAdapter.PhonemeV
             audioIcon.setLayoutParams(new LinearLayout.LayoutParams(48, 48));
             audioIcon.setImageResource(R.drawable.ic_audio);
             audioIcon.setOnClickListener(v -> {
-                Log.d("AudioClick", "URL del audio: " + character.getAudioCharacterUrl());
+                Log.d("AudioClick", "URL del audio: " + phoeneme.getAudioPhoenemeUrl());
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(character.getAudioCharacterUrl());
+                    mediaPlayer.setDataSource(phoeneme.getAudioPhoenemeUrl());
                     mediaPlayer.setOnPreparedListener(MediaPlayer::start);
                     mediaPlayer.setOnCompletionListener(mp -> {
                         mp.release(); // Liberar el MediaPlayer después de la reproducción
@@ -73,7 +73,7 @@ public class PhonemeAdapter extends RecyclerView.Adapter<PhonemeAdapter.PhonemeV
 
             // Texto del fonema
             TextView phonemeText = new TextView(context);
-            phonemeText.setText(String.format("%s as in %s", character.getPhoneticCharacter(), character.getWordExample()));
+            phonemeText.setText(String.format("%s as in %s", phoeneme.getPhoenemeName(), phoeneme.getWordExample()));
             phonemeText.setTextSize(14);
             phonemeText.setPadding(16, 0, 0, 0);
 
@@ -86,7 +86,7 @@ public class PhonemeAdapter extends RecyclerView.Adapter<PhonemeAdapter.PhonemeV
 
     @Override
     public int getItemCount() {
-        return countriesVerb.size();
+        return countriesWord.size();
     }
 
     public static class PhonemeViewHolder extends RecyclerView.ViewHolder {

@@ -3,15 +3,15 @@ package com.example.applicationtest.models;
 import java.util.List;
 
 public class Verb {
-    private List<CountryVerb> countriesVerb;
+    private List<CountryWord> countriesWord;
     private List<String> images;
 
-    public List<CountryVerb> getCountriesVerb() {
-        return countriesVerb;
+    public List<CountryWord> getCountriesWord() {
+        return countriesWord;
     }
 
-    public void setCountriesVerb(List<CountryVerb> countriesVerb) {
-        this.countriesVerb = countriesVerb;
+    public void setCountriesWord(List<CountryWord> countriesWord) {
+        this.countriesWord = countriesWord;
     }
 
     public List<String> getImages() {
@@ -22,12 +22,12 @@ public class Verb {
         this.images = images;
     }
 
-    public static class CountryVerb {
+    public static class CountryWord {
         private String country;
-        private String verbName;
+        private String wordName;
         private String audioUrl;
         private String phonetic;
-        private List<Character> characters;
+        private List<Phoeneme> characters;
 
         public String getCountry() {
             return country;
@@ -37,12 +37,12 @@ public class Verb {
             this.country = country;
         }
 
-        public String getVerbName() {
-            return verbName;
+        public String getWordName() {
+            return wordName;
         }
 
-        public void setVerbName(String verbName) {
-            this.verbName = verbName;
+        public void setWordName(String wordName) {
+            this.wordName = wordName;
         }
 
         public String getAudioUrl() {
@@ -61,26 +61,26 @@ public class Verb {
             this.phonetic = phonetic;
         }
 
-        public List<Character> getCharacters() {
+        public List<Phoeneme> getCharacters() {
             return characters;
         }
 
-        public void setCharacters(List<Character> characters) {
+        public void setCharacters(List<Phoeneme> characters) {
             this.characters = characters;
         }
     }
 
-    public static class Character {
-        private String phoneticCharacter;
+    public static class Phoeneme {
+        private String phoenemeName;
         private String wordExample;
-        private String audioCharacterUrl;
+        private String audioPhoenemeUrl;
 
-        public String getPhoneticCharacter() {
-            return phoneticCharacter;
+        public String getPhoenemeName() {
+            return phoenemeName;
         }
 
-        public void setPhoneticCharacter(String phoneticCharacter) {
-            this.phoneticCharacter = phoneticCharacter;
+        public void setPhoenemeName(String phoenemeName) {
+            this.phoenemeName = phoenemeName;
         }
 
         public String getWordExample() {
@@ -91,12 +91,12 @@ public class Verb {
             this.wordExample = wordExample;
         }
 
-        public String getAudioCharacterUrl() {
-            return audioCharacterUrl;
+        public String getAudioPhoenemeUrl() {
+            return audioPhoenemeUrl;
         }
 
-        public void setAudioCharacterUrl(String audioCharacterUrl) {
-            this.audioCharacterUrl = audioCharacterUrl;
+        public void setAudioPhoenemeUrl(String audioPhoenemeUrl) {
+            this.audioPhoenemeUrl = audioPhoenemeUrl;
         }
     }
 }
