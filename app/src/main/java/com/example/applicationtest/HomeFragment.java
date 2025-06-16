@@ -32,15 +32,33 @@ public class HomeFragment extends Fragment {
         RecyclerView phonemeRecyclerView = view.findViewById(R.id.phonemeRecyclerView);
         phonemeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        String requestType = getArguments() != null ? getArguments().getString("requestType", "verbs") : "verbs";
+
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-        apiService.getVerbs().enqueue(new Callback<List<Verb>>() {
+        Call<List<Verb>> apiCall;
+
+        switch (requestType) {
+            case "adjectives":
+                apiCall = apiService.getAdjectives();
+                break;
+            case "nouns":
+                apiCall = apiService.getNouns();
+                break;
+            case "articles":
+                apiCall = apiService.getArticles();
+                break;
+            default:
+                apiCall = apiService.getVerbs();
+                break;
+        }
+
+        apiCall.enqueue(new Callback<List<Verb>>() {
             @Override
             public void onResponse(Call<List<Verb>> call, Response<List<Verb>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Verb> verbs = response.body();
                     updateContent(verbs, currentIndex);
 
-                    // Configurar botones de navegación
                     view.findViewById(R.id.btnPrevious).setOnClickListener(v -> {
                         if (currentIndex > 0) {
                             currentIndex--;
@@ -73,7 +91,7 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(imageAdapter);
 
         // Actualizar el RecyclerView de fonemas
-        PhonemeAdapter phonemeAdapter = new PhonemeAdapter(getContext(), currentVerb.getCountriesWord());
+        PhonemeAdapter phonemeAdapter = new PhonemeAdapter(getContext(), currentVerb.getPronunciations());
         RecyclerView phonemeRecyclerView = view.findViewById(R.id.phonemeRecyclerView);
         phonemeRecyclerView.setAdapter(phonemeAdapter);
     }

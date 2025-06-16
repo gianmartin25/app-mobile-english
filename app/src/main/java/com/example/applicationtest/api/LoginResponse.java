@@ -1,14 +1,16 @@
-package com.example.applicationtest.auth.models;
+package com.example.applicationtest.api;
 
+import java.io.Serializable;
 
-public class RegisterResponse {
+public class LoginResponse {
+    private String access_token;
     private User user;
 
-    public String getAccess_token() {
+    public String getAccessToken() {
         return access_token;
     }
 
-    public void setAccess_token(String access_token) {
+    public void setAccessToken(String access_token) {
         this.access_token = access_token;
     }
 
@@ -20,9 +22,26 @@ public class RegisterResponse {
         this.user = user;
     }
 
-    private String access_token;
+    public static class User implements Serializable {
+        public User(String name, String lastname, String email, String englishLevel, String learningGoals, String profileImage) {
+            this.name = name;
+            this.lastname = lastname;
+            this.email = email;
+            this.englishLevel = englishLevel;
+            this.learningGoals = learningGoals;
+            this.profileImage = profileImage;
+        }
 
-    public static class User {
+        private int id;
+        private String name;
+        private String lastname;
+        private String email;
+        private String englishLevel;
+        private String learningGoals;
+        private String createdAt;
+        private String updatedAt;
+        private String  profileImage;
+
         public int getId() {
             return id;
         }
@@ -53,14 +72,6 @@ public class RegisterResponse {
 
         public void setEmail(String email) {
             this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
         }
 
         public String getEnglishLevel() {
@@ -102,23 +113,5 @@ public class RegisterResponse {
         public void setProfileImage(String profileImage) {
             this.profileImage = profileImage;
         }
-
-        private int id;
-        private String name;
-        private String lastname;
-        private String email;
-        private String password;
-        private String englishLevel;
-        private String learningGoals;
-        private String createdAt;
-        private String updatedAt;
-
-        private String  profileImage;
-
-        // Getters y setters (opcional)
-
-
     }
-
-    // Getters y setters (opcional)
 }

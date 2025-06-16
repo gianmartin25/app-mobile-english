@@ -3,15 +3,34 @@ package com.example.applicationtest.models;
 import java.util.List;
 
 public class Verb {
-    private List<CountryWord> countriesWord;
+    private int id;
+    private String wordName;
+    private String typeName;
     private List<String> images;
+    private List<Pronunciation> pronunciations;
 
-    public List<CountryWord> getCountriesWord() {
-        return countriesWord;
+    public int getId() {
+        return id;
     }
 
-    public void setCountriesWord(List<CountryWord> countriesWord) {
-        this.countriesWord = countriesWord;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getWordName() {
+        return wordName;
+    }
+
+    public void setWordName(String wordName) {
+        this.wordName = wordName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public List<String> getImages() {
@@ -22,35 +41,26 @@ public class Verb {
         this.images = images;
     }
 
-    public static class CountryWord {
-        private String country;
-        private String wordName;
-        private String audioUrl;
+    public List<Pronunciation> getPronunciations() {
+        return pronunciations;
+    }
+
+    public void setPronunciations(List<Pronunciation> pronunciations) {
+        this.pronunciations = pronunciations;
+    }
+
+    public static class Pronunciation {
+        private String locale;
         private String phonetic;
-        private List<Phoeneme> characters;
+        private String audioUrl;
+        private List<Phoneme> phonemes;
 
-        public String getCountry() {
-            return country;
+        public String getLocale() {
+            return locale;
         }
 
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public String getWordName() {
-            return wordName;
-        }
-
-        public void setWordName(String wordName) {
-            this.wordName = wordName;
-        }
-
-        public String getAudioUrl() {
-            return audioUrl;
-        }
-
-        public void setAudioUrl(String audioUrl) {
-            this.audioUrl = audioUrl;
+        public void setLocale(String locale) {
+            this.locale = locale;
         }
 
         public String getPhonetic() {
@@ -61,42 +71,59 @@ public class Verb {
             this.phonetic = phonetic;
         }
 
-        public List<Phoeneme> getCharacters() {
-            return characters;
+        public String getAudioUrl() {
+            return audioUrl;
         }
 
-        public void setCharacters(List<Phoeneme> characters) {
-            this.characters = characters;
+        public void setAudioUrl(String audioUrl) {
+            this.audioUrl = audioUrl;
+        }
+
+        public List<Phoneme> getPhonemes() {
+            return phonemes;
+        }
+
+        public void setPhonemes(List<Phoneme> phonemes) {
+            this.phonemes = phonemes;
         }
     }
 
-    public static class Phoeneme {
-        private String phoenemeName;
-        private String wordExample;
-        private String audioPhoenemeUrl;
+    public static class Phoneme {
+        private String symbol;
+        private String audioUrl;
+        private String example;
+        private String exampleAudioUrl;
 
-        public String getPhoenemeName() {
-            return phoenemeName;
+        public String getSymbol() {
+            return symbol;
         }
 
-        public void setPhoenemeName(String phoenemeName) {
-            this.phoenemeName = phoenemeName;
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
         }
 
-        public String getWordExample() {
-            return wordExample;
+        public String getAudioUrl() {
+            return audioUrl;
         }
 
-        public void setWordExample(String wordExample) {
-            this.wordExample = wordExample;
+        public void setAudioUrl(String audioUrl) {
+            this.audioUrl = audioUrl;
         }
 
-        public String getAudioPhoenemeUrl() {
-            return audioPhoenemeUrl;
+        public String getExample() {
+            return example;
         }
 
-        public void setAudioPhoenemeUrl(String audioPhoenemeUrl) {
-            this.audioPhoenemeUrl = audioPhoenemeUrl;
+        public void setExample(String example) {
+            this.example = example;
+        }
+
+        public String getExampleAudioUrl() {
+            return exampleAudioUrl;
+        }
+
+        public void setExampleAudioUrl(String exampleAudioUrl) {
+            this.exampleAudioUrl = exampleAudioUrl;
         }
     }
 }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "478208768466",
+    "project_id": "appenglishvocabulary-26c60",
+    "storage_bucket": "appenglishvocabulary-26c60.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478208768466:android:867dbc604df974cfd8f00b",
+        "android_client_info": {
+          "package_name": "com.example.applicationtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478208768466-h79igijiv5atq8sld2m90a4u5csufo3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.applicationtest",
+            "certificate_hash": "712dde89cf30280657b49ffd455c1fcf02eb2545"
+          }
+        },
+        {
+          "client_id": "478208768466-4v3l4506c13ksh8k3kd9ff1q33kvvcnq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_0EK2dK8pDSHdSMFHycykD0JaaXtsoSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478208768466-4v3l4506c13ksh8k3kd9ff1q33kvvcnq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

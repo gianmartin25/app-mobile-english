@@ -12,7 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int DURACION_SPLASH = 5000; //milisegundos
+    private static final int DURACION_SPLASH = 5000; // milisegundos
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +21,8 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         new Handler().postDelayed(() -> {
-            //cambiar como actividad principal
-            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+            // Cambiar a LoginActivity después de la animación
+            Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }, DURACION_SPLASH);

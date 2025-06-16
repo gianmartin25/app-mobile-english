@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.applicationtest.api.ApiService;
+import com.example.applicationtest.api.LoginResponse;
 import com.example.applicationtest.api.RetrofitClient;
 import com.example.applicationtest.auth.models.RegisterRequest;
 import com.example.applicationtest.auth.models.RegisterResponse;
@@ -152,21 +153,21 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("Register", "Respuesta exitosa: " + response.body().toString());
 
-                    // Mostrar alerta de éxito
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("Registro exitoso")
-                            .setMessage("El usuario se ha registrado correctamente.")
-                            .setPositiveButton("Aceptar", (dialog, which) -> {
-                                // Navegar a DashboardActivity
-                                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                                intent.putExtra("fullName", fullName);
-                                intent.putExtra("email", email);
-                                intent.putExtra("englishLevel", englishLevel);
-                                intent.putExtra("learningGoals", learningGoals);
-                                startActivity(intent);
-                                finish();
-                            })
-                            .show();
+                    // Crear objeto LoginResponse.User
+                    LoginResponse.User user = new LoginResponse.User(
+                            name,
+                            lastname,
+                            email,
+                            englishLevel,
+                            learningGoals,
+                            null // Puedes agregar la URL de la imagen si está disponible
+                    );
+
+                    // Navegar a DashboardActivity
+                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Log.e("Register", "Error en la respuesta: " + response.code());
                     Toast.makeText(MainActivity.this, "Error al registrar usuario: " + response.message(), Toast.LENGTH_SHORT).show();

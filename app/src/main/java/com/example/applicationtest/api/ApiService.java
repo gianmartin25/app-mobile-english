@@ -16,7 +16,21 @@ public interface ApiService {
     @GET("verbs")
     Call<List<Verb>> getVerbs();
 
+    @GET("adjectives")
+    Call<List<Verb>> getAdjectives();
 
+    @GET("nouns")
+    Call<List<Verb>> getNouns();
+
+    @GET("articles")
+    Call<List<Verb>> getArticles();
+
+    @POST("/auth/login")
+    Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
     @POST("auth/register")
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
+
+    @POST("/auth/google-mobile")
+    Call<LoginResponse> loginWithGoogle(@Body GoogleLoginRequest request);
+
 }

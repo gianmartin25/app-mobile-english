@@ -17,7 +17,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Recuperar datos del Bundle
         Bundle args = getArguments();
         if (args != null) {
             String fullName = args.getString("fullName");
@@ -25,7 +24,6 @@ public class ProfileFragment extends Fragment {
             String englishLevel = args.getString("englishLevel");
             String learningGoals = args.getString("learningGoals");
 
-            // Mostrar los datos en la interfaz
             TextView profileInfo = view.findViewById(R.id.profileInfo);
             profileInfo.setText("Nombre: " + fullName + "\nCorreo: " + email +
                     "\nNivel de inglés: " + englishLevel +
